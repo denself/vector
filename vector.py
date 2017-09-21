@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
-from typing import Iterable
+from typing import Iterable, Union
 
 import math
 
@@ -43,6 +43,19 @@ class Vector:
         if self.magnitude == 0:
             return Vector([0] * self.dimensions)
         return self / self.magnitude
+
+    def angle_to(self, other: 'Vector') -> float:
+        """
+        >>> abs(Vector((0, 1)).angle_to(Vector((1, 0))) - math.pi / 2) < 0.0001
+        True
+        >>> Vector((1, 2)).angle_to(Vector((1, 2, 3)))
+        Traceback (most recent call last):
+        ...
+        AssertionError
+        """
+        assert self.dimensions == other.dimensions
+
+        return math.acos(self.get_normal() * other.get_normal())
 
     def __eq__(self, other: 'Vector') -> bool:
         """
@@ -87,7 +100,7 @@ class Vector:
         return Vector(map(lambda x: x[0]-x[1],
                           zip(self.coordinates, other.coordinates)))
 
-    def __mul__(self, other: float) -> 'Vector':
+    def __mul__(self, other: Union[float, 'Vector']) -> Union['Vector', float]:
         """
         >>> Vector((1, 2, 3)) * 2
         Vector((2, 4, 6))
@@ -96,14 +109,23 @@ class Vector:
         >>> Vector((1, 2, 3)) * -1
         Vector((-1, -2, -3))
         >>> Vector((1, 2)) * Vector((1, 2))
+        5
+        >>> Vector((1, 2)) * Vector((1, 2, 3))
         Traceback (most recent call last):
         ...
         AssertionError
         """
+        if isinstance(other, Vector):
+            assert self.dimensions == other.dimensions
 
-        assert isinstance(other, (int, float))
+            return sum(map(lambda x: x[0] * x[1],
+                           zip(self.coordinates, other.coordinates)))
+        elif isinstance(other, (int, float)):
 
-        return Vector(map(lambda x: x * other, self.coordinates))
+            return Vector(map(lambda x: x * other, self.coordinates))
+
+        else:
+            raise AssertionError
 
     def __rmul__(self, other: float) -> 'Vector':
         """
