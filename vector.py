@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from typing import Iterable
 
+import math
+
 
 class Vector:
     def __init__(self, coordinates: Iterable[float]):
@@ -20,6 +22,27 @@ class Vector:
                        self.coordinates))
 
         self.dimensions = len(self.coordinates)
+
+    @property
+    def magnitude(self) -> float:
+        """
+        >>> Vector([3, 4]).magnitude
+        5.0
+        >>> Vector([5, 12]).magnitude
+        13.0
+        """
+        return math.sqrt(sum(map(lambda x: math.pow(x, 2), self.coordinates)))
+
+    def get_normal(self) -> 'Vector':
+        """
+        >>> Vector((2, 2)).get_normal()
+        Vector((0.7071067811865475, 0.7071067811865475))
+        >>> Vector((5, -4)).get_normal().magnitude
+        1.0
+        """
+        if self.magnitude == 0:
+            return Vector([0] * self.dimensions)
+        return self / self.magnitude
 
     def __eq__(self, other: 'Vector') -> bool:
         """
@@ -89,6 +112,16 @@ class Vector:
         """
         return self.__mul__(other)
 
+    def __truediv__(self, other: float) -> 'Vector':
+        """
+        >>> Vector((4, 5)) / 2
+        Vector((2.0, 2.5))
+        """
+
+        assert isinstance(other, (int, float))
+
+        return Vector(map(lambda x: x / other, self.coordinates))
+
     def __str__(self):
         """
         >>> str(Vector((1, 2, 3)))
@@ -103,3 +136,7 @@ class Vector:
         """
         return str(self)
 
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
