@@ -26,8 +26,8 @@ def task_2():
     """
 
     print(f"\n{'Task 2':^79s}")
-    print(Vector(-0.221, 7.437).magnitude)
-    print(Vector(8.813, -1.331, -6.247).magnitude)
+    print(f'{Vector(-0.221, 7.437).magnitude:.3}')
+    print(f'{Vector(8.813, -1.331, -6.247).magnitude:.3}')
     print(Vector(5.581, -2.136).get_normal())
     print(Vector(1.996, 3.108, -4.554).get_normal())
 
@@ -39,12 +39,13 @@ def task_3():
     """
 
     print(f"\n{'Task 3':^79s}")
-    print(Vector(7.887, 4.138) * Vector(-8.802, 6.776))
-    print(Vector(-5.955, -4.904, -1.874) * Vector(-4.496, -8.755, 7.103))
-    print(Vector(3.183, -7.627).angle_to(Vector(-2.668, 5.319)))
-    print(math.degrees(
+    print(f'{Vector(7.887, 4.138) * Vector(-8.802, 6.776):.3f}')
+    print(
+        f'{Vector(-5.955, -4.904, -1.874) * Vector(-4.496, -8.755, 7.103):.3f}')
+    print(f'{Vector(3.183, -7.627).angle_to(Vector(-2.668, 5.319)):.3f}')
+    print(f'''{math.degrees(
         Vector(7.35, 0.221, 5.188).angle_to(Vector(2.751, 8.259, 3.985))
-    ))
+    ):.3f}''')
 
 
 def task_4():
@@ -72,8 +73,22 @@ def task_4():
     print(Vector('2.118', '4.827').is_orthogonal(Vector(0, 0)))
 
 
+def task_5():
+    """
+    Lesson 2.12
+    Vector projections
+    """
+    print(f"\n{'Task 5':^79s}")
+    print(Vector('3.039', '1.879').project_on(Vector('0.825', '2.036'))[0])
+    print(Vector('-9.88', '-3.264', '-8.159')
+          .project_on(Vector('-2.155', '-9.353', '-9.473'))[1])
+    print(Vector('3.009', '-6.172', '3.692', '-2.51')
+          .project_on(Vector('6.404', '-9.144', '2.759', '8.718')))
+
+
 if __name__ == '__main__':
     task_1()
     task_2()
     task_3()
     task_4()
+    task_5()

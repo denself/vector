@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 import math
 from decimal import Decimal, getcontext
-from typing import Union
-
+from typing import Union, Tuple
 
 getcontext().prec = 30
 
@@ -106,6 +105,19 @@ class Vector:
         """
         return self * other == 0
 
+    def project_on(self, other: 'Vector') -> Tuple['Vector', 'Vector']:
+        """
+        >>> Vector(3, 4).project_on(Vector(3, 0))
+        (Vector(3, 0), Vector(0, 4))
+        """
+        other_normal = other.get_normal()
+
+        parallel_component = self * other_normal * other_normal
+
+        orthogonal_component = self - parallel_component
+
+        return parallel_component, orthogonal_component
+
     def __eq__(self, other: 'Vector') -> bool:
         """
         >>> Vector(1, 2) == Vector(1, 2)
@@ -201,7 +213,7 @@ class Vector:
         >>> str(Vector(1, 2, 3))
         'Vector(1, 2, 3)'
         """
-        s = ', '.join(f'{x:.3}' for x in self.coordinates)
+        s = ', '.join(f'{x:.4f}' for x in self.coordinates)
         return f"{self.__class__.__name__}({s})"
 
     def __repr__(self):
