@@ -86,9 +86,25 @@ def task_5():
           .project_on(Vector('6.404', '-9.144', '2.759', '8.718')))
 
 
+def task_6():
+    """
+    Lesson 2.14
+    Cross-product
+    """
+    print(f"\n{'Task 5':^79s}")
+    print(Vector('8.462', '7.893', '-8.187')
+          .cross_product(Vector('6.984', '-5.975', '4.778')))
+    print(Vector('-8.987', '-9.838', '5.031')
+          .cross_product(Vector('-4.268', '-1.861', '-8.866')).magnitude)
+    print(Vector('1.5', '9.547', '3.691')
+          .cross_product(Vector('-6.007', '0.124', '5.772')).magnitude / 2)
+
+
 if __name__ == '__main__':
+    Vector.precision = 4
     task_1()
     task_2()
     task_3()
     task_4()
     task_5()
+    task_6()

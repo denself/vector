@@ -8,6 +8,9 @@ getcontext().prec = 30
 
 
 class Vector:
+
+    precision = None
+
     def __init__(self, *coordinates: Union[float, str]):
 
         self.coordinates = tuple([Decimal(x) for x in coordinates])
@@ -118,6 +121,29 @@ class Vector:
 
         return parallel_component, orthogonal_component
 
+    def cross_product(self, other: 'Vector') -> 'Vector':
+        """
+        >>> v1 = Vector(2, 0, 0)
+        >>> v2 = Vector(0, 2, 0)
+        >>> v3 = v1.cross_product(v2)
+        >>> v3
+        Vector(0, 0, 4)
+        >>> v3.is_orthogonal(v1)
+        True
+        >>> v3.is_orthogonal(v2)
+        True
+        """
+        assert self.dimensions == other.dimensions == 3
+
+        x1, y1, z1 = self.coordinates
+        x2, y2, z2 = other.coordinates
+
+        return Vector(
+            y1 * z2 - y2 * z1,
+            x2 * z1 - x1 * z2,
+            x1 * y2 - x2 * y1
+        )
+
     def __eq__(self, other: 'Vector') -> bool:
         """
         >>> Vector(1, 2) == Vector(1, 2)
@@ -158,7 +184,7 @@ class Vector:
         """
         assert self.dimensions == other.dimensions
 
-        return Vector(*map(lambda x: x[0]-x[1],
+        return Vector(*map(lambda x: x[0] - x[1],
                            zip(self.coordinates, other.coordinates)))
 
     def __mul__(self, other: Union[float, 'Vector']) \
@@ -213,7 +239,10 @@ class Vector:
         >>> str(Vector(1, 2, 3))
         'Vector(1, 2, 3)'
         """
-        s = ', '.join(f'{x:.4f}' for x in self.coordinates)
+        if self.precision is None:
+            s = ', '.join(f'{x}' for x in self.coordinates)
+        else:
+            s = ', '.join(f'{x:.{self.precision}f}' for x in self.coordinates)
         return f"{self.__class__.__name__}({s})"
 
     def __repr__(self):
@@ -226,4 +255,5 @@ class Vector:
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
