@@ -27,11 +27,11 @@ class Vector:
         """
         return Decimal.sqrt(sum(map(lambda x: x * x, self.coordinates)))
 
-    def get_normal(self) -> 'Vector':
+    def get_unit_vector(self) -> 'Vector':
         """
-        >>> abs(Vector(-2, 2).get_normal().magnitude - 1) < 0.00001
+        >>> abs(Vector(-2, 2).get_unit_vector().magnitude - 1) < 0.00001
         True
-        >>> abs(Vector(5, -4).get_normal().magnitude - 1) < 0.000001
+        >>> abs(Vector(5, -4).get_unit_vector().magnitude - 1) < 0.000001
         True
         """
         if self.magnitude == 0:
@@ -51,7 +51,8 @@ class Vector:
         """
         assert self.dimensions == other.dimensions
 
-        return Decimal(math.acos(self.get_normal() * other.get_normal()))
+        product = self.get_unit_vector() * other.get_unit_vector()
+        return Decimal(math.acos(product))
 
     def is_parallel(self, other: 'Vector') -> bool:
         """
@@ -113,9 +114,9 @@ class Vector:
         >>> Vector(3, 4).project_on(Vector(3, 0))
         (Vector(3, 0), Vector(0, 4))
         """
-        other_normal = other.get_normal()
+        other_unit_vector = other.get_unit_vector()
 
-        parallel_component = self * other_normal * other_normal
+        parallel_component = self * other_unit_vector * other_unit_vector
 
         orthogonal_component = self - parallel_component
 
@@ -233,6 +234,12 @@ class Vector:
         other = Decimal(other)
 
         return Vector(*map(lambda x: x / other, self.coordinates))
+
+    def __iter__(self):
+        return iter(self.coordinates)
+
+    def __getitem__(self, item):
+        return self.coordinates[item]
 
     def __str__(self):
         """

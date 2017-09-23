@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import math
 
+from line import Line, GeometryException
 from vector import Vector
 
 
@@ -28,8 +29,8 @@ def task_2():
     print(f"\n{'Task 2':^79s}")
     print(f'{Vector(-0.221, 7.437).magnitude:.3}')
     print(f'{Vector(8.813, -1.331, -6.247).magnitude:.3}')
-    print(Vector(5.581, -2.136).get_normal())
-    print(Vector(1.996, 3.108, -4.554).get_normal())
+    print(Vector(5.581, -2.136).get_unit_vector())
+    print(Vector(1.996, 3.108, -4.554).get_unit_vector())
 
 
 def task_3():
@@ -91,7 +92,7 @@ def task_6():
     Lesson 2.14
     Cross-product
     """
-    print(f"\n{'Task 5':^79s}")
+    print(f"\n{'Task 6':^79s}")
     print(Vector('8.462', '7.893', '-8.187')
           .cross_product(Vector('6.984', '-5.975', '4.778')))
     print(Vector('-8.987', '-9.838', '5.031')
@@ -100,11 +101,37 @@ def task_6():
           .cross_product(Vector('-6.007', '0.124', '5.772')).magnitude / 2)
 
 
+def task_7():
+    """
+    Lesson 3.4
+    Intersections of lines
+    """
+    print(f"\n{'Task 7':^79s}")
+    try:
+        print(Line(Vector('4.046', '2.836'), '1.21')
+              .get_intersection(Line(Vector('10.115', '7.09'), '3.025')))
+    except GeometryException as ex:
+        print(ex)
+    try:
+        print(Line(Vector('7.204', '3.182'), '8.68')
+              .get_intersection(Line(Vector('8.172', '4.114'), '9.883')))
+    except GeometryException as ex:
+        print(ex)
+    try:
+        print(Line(Vector('1.182', '5.562'), '6.744')
+              .get_intersection(Line(Vector('1.773', '8.343'), '9.525')))
+    except GeometryException as ex:
+        print(ex)
+
+
+
 if __name__ == '__main__':
     Vector.precision = 4
-    task_1()
-    task_2()
-    task_3()
-    task_4()
-    task_5()
-    task_6()
+    # task_1()
+    # task_2()
+    # task_3()
+    # task_4()
+    # task_5()
+    # task_6()
+
+    task_7()
