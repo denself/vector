@@ -145,6 +145,15 @@ class Vector:
             x1 * y2 - x2 * y1
         )
 
+    def __bool__(self):
+        """
+        >>> bool(Vector(1, 2))
+        True
+        >>> bool(Vector(0, 0))
+        False
+        """
+        return any(self)
+
     def __eq__(self, other: 'Vector') -> bool:
         """
         >>> Vector(1, 2) == Vector(1, 2)

@@ -107,21 +107,12 @@ def task_7():
     Intersections of lines
     """
     print(f"\n{'Task 7':^79s}")
-    try:
-        print(Line(Vector('4.046', '2.836'), '1.21')
-              .get_intersection(Line(Vector('10.115', '7.09'), '3.025')))
-    except GeometryException as ex:
-        print(ex)
-    try:
-        print(Line(Vector('7.204', '3.182'), '8.68')
-              .get_intersection(Line(Vector('8.172', '4.114'), '9.883')))
-    except GeometryException as ex:
-        print(ex)
-    try:
-        print(Line(Vector('1.182', '5.562'), '6.744')
-              .get_intersection(Line(Vector('1.773', '8.343'), '9.525')))
-    except GeometryException as ex:
-        print(ex)
+    print(Line(Vector('4.046', '2.836'), '1.21')
+          .get_intersection(Line(Vector('10.115', '7.09'), '3.025')))
+    print(Line(Vector('7.204', '3.182'), '8.68')
+          .get_intersection(Line(Vector('8.172', '4.114'), '9.883')))
+    print(Line(Vector('1.182', '5.562'), '6.744')
+          .get_intersection(Line(Vector('1.773', '8.343'), '9.525')))
 
 
 

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
-from typing import Tuple, Iterable, Union
-
 from decimal import Decimal
+from typing import Iterable, Union
 
 from vector import Vector
 
@@ -20,7 +19,6 @@ class LinesEqualException(GeometryException):
 
 
 class Line:
-
     precision = None
 
     def __init__(self,
@@ -50,13 +48,22 @@ class Line:
         """
         return self.normal_vector.is_parallel(other.normal_vector)
 
-    def is_equal(self, other: 'Line') -> bool:
+    def __eq__(self, other: 'Line') -> bool:
         """
-        >>> Line(Vector(2, 3), 5).is_equal(Line(Vector(4, 6), 10))
+        >>> Line(Vector(2, 3), 5) == Line(Vector(4, 6), 10)
         True
-        >>> Line(Vector(2, 3), 5).is_equal(Line(Vector(4, 5), 10))
+        >>> Line(Vector(2, 3), 5) == Line(Vector(4, 5), 10)
         False
         """
+        if not self.normal_vector:
+            if other.normal_vector:
+                return False
+            else:
+                diff = self.constant_term - other.constant_term
+                return is_zero(diff)
+        elif not other.normal_vector:
+            return False
+
         if not self.is_parallel(other):
             return False
 
@@ -64,23 +71,19 @@ class Line:
 
         return self.normal_vector.is_orthogonal(middle_vector)
 
-    def get_intersection(self, other: 'Line') -> Vector:
+    def get_intersection(self, other: 'Line') -> Union['Line', Vector, None]:
         """
         >>> Line(Vector(3, 3), 6).get_intersection(Line(Vector(3, -3), 3))
         Vector(1.5, 0.5)
         >>> Line(Vector(2, 3), 5).get_intersection(Line(Vector(4, 6), 10))
-        Traceback (most recent call last):
-        ...
-        line.LinesEqualException: Infinite amount of intersection points
+        Line(2x_0+3x_1=5)
         >>> Line(Vector(2, 3), 5).get_intersection(Line(Vector(4, 6), 3))
-        Traceback (most recent call last):
-        ...
-        line.LinesParallelException: No intersection points
+
         """
-        if self.is_equal(other):
-            raise LinesEqualException("Infinite amount of intersection points")
+        if self == other:
+            return self
         if self.is_parallel(other):
-            raise LinesParallelException("No intersection points")
+            return None
 
         a, b = self.normal_vector
         c, d = other.normal_vector
@@ -92,7 +95,7 @@ class Line:
     @staticmethod
     def _first_nonzero_index(iterable: Iterable) -> int:
         for k, item in enumerate(iterable):
-            if not abs(item) < 1e-10:
+            if not is_zero(item):
                 return k
 
     def __str__(self):
@@ -103,7 +106,7 @@ class Line:
         class_name = self.__class__.__name__
         initial_index = self._first_nonzero_index(self.normal_vector)
 
-        def to_coef(value, index: int):
+        def to_coeff(value, index: int):
             value = round(value, self.precision)
             if not value % 1:
                 value = int(value)
@@ -118,7 +121,8 @@ class Line:
             output = '0'
 
         else:
-            output = ''.join(to_coef(v, i) for i, v in enumerate(self.normal_vector))
+            output = ''.join(to_coeff(v, i) for i, v in
+                             enumerate(self.normal_vector))
             if output.startswith('+'):
                 output = output[1:]
 
@@ -133,5 +137,5 @@ class Line:
     __repr__ = __str__
 
 
-if __name__ == '__main__':
-    print(Line(Vector(-2, 3), 5))
+def is_zero(val: int):
+    return abs(val) < 1e-10
