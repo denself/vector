@@ -1,8 +1,9 @@
 #!/usr/bin/env python3.6
 # -*- coding: utf-8 -*-
 from decimal import Decimal
-from typing import Iterable, Union
+from typing import Union
 
+from tools import is_zero, first_nonzero_index
 from vector import Vector
 
 
@@ -32,7 +33,7 @@ class Line:
         self.base_point = None
 
         base_point_coords = ['0'] * self.dimension
-        initial_index = self._first_nonzero_index(self.normal_vector)
+        initial_index = first_nonzero_index(self.normal_vector)
         if initial_index is not None:
             initial_coefficient = self.normal_vector[initial_index]
             base_point_coords[initial_index] = \
@@ -92,19 +93,13 @@ class Line:
         return Vector((d * k1 - b * k2) / (a * d - b * c),
                       (a * k2 - c * k1) / (a * d - b * c))
 
-    @staticmethod
-    def _first_nonzero_index(iterable: Iterable) -> int:
-        for k, item in enumerate(iterable):
-            if not is_zero(item):
-                return k
-
     def __str__(self):
         """
         >>> Line(Vector(2, 3), 1)
         Line(2x_0+3x_1=1)
         """
         class_name = self.__class__.__name__
-        initial_index = self._first_nonzero_index(self.normal_vector)
+        initial_index = first_nonzero_index(self.normal_vector)
 
         def to_coeff(value, index: int):
             value = round(value, self.precision)
@@ -135,7 +130,3 @@ class Line:
         return f'{class_name}({output})'
 
     __repr__ = __str__
-
-
-def is_zero(val: int):
-    return abs(val) < 1e-10

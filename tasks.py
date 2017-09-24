@@ -3,6 +3,7 @@
 import math
 
 from line import Line, GeometryException
+from plane import Plane
 from vector import Vector
 
 
@@ -115,6 +116,24 @@ def task_7():
           .get_intersection(Line(Vector('1.773', '8.343'), '9.525')))
 
 
+def task_8():
+    """
+    Lesson 3.7
+    Planes in three dimensions
+    """
+    print(f"\n{'Task 8':^79s}")
+    p1 = Plane(Vector('-0.412', '3.806', '0.728'), '-3.46')
+    p2 = Plane(Vector('1.03', '-9.515', '-1.82'), '8.65')
+    print(p1 == p2, p1.is_parallel(p2))
+
+    p1 = Plane(Vector('2.611', '5.528', '0.283'), '4.6')
+    p2 = Plane(Vector('7.715', '8.306', '5.342'), '3.76')
+    print(p1 == p2, p1.is_parallel(p2))
+
+    p1 = Plane(Vector('-7.926', '8.625', '-7.212'), '-7.952')
+    p2 = Plane(Vector('-2.642', '2.875', '-2.404'), '-2.443')
+    print(p1 == p2, p1.is_parallel(p2))
+
 
 if __name__ == '__main__':
     Vector.precision = 4
@@ -124,5 +143,5 @@ if __name__ == '__main__':
     # task_4()
     # task_5()
     # task_6()
-
-    task_7()
+    # task_7()
+    task_8()
