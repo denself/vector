@@ -9,5 +9,5 @@ https://classroom.udacity.com/courses/ud953
 To run tests simply run:
 
 ```python
-python -m doctest vector.py
+python -m doctest ./*.py
 ```

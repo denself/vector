@@ -15,7 +15,7 @@ class Vector:
 
         self.coordinates = tuple([Decimal(x) for x in coordinates])
 
-        self.dimensions = len(self.coordinates)
+        self.dimension = len(self.coordinates)
 
     @property
     def magnitude(self) -> Decimal:
@@ -35,7 +35,7 @@ class Vector:
         True
         """
         if self.magnitude == 0:
-            return Vector(*([0] * self.dimensions))
+            return Vector(*([0] * self.dimension))
         return self / self.magnitude
 
     def angle_to(self, other: 'Vector') -> Decimal:
@@ -49,7 +49,7 @@ class Vector:
         ...
         AssertionError
         """
-        assert self.dimensions == other.dimensions
+        assert self.dimension == other.dimension
 
         product = self.get_unit_vector() * other.get_unit_vector()
         return Decimal(math.acos(product))
@@ -68,7 +68,7 @@ class Vector:
         False
 
         """
-        assert self.dimensions == other.dimensions
+        assert self.dimension == other.dimension
 
         if not any(self.coordinates):
             return True
@@ -134,7 +134,7 @@ class Vector:
         >>> v3.is_orthogonal(v2)
         True
         """
-        assert self.dimensions == other.dimensions == 3
+        assert self.dimension == other.dimension == 3
 
         x1, y1, z1 = self.coordinates
         x2, y2, z2 = other.coordinates
@@ -176,7 +176,7 @@ class Vector:
         ...
         AssertionError
         """
-        assert self.dimensions == other.dimensions
+        assert self.dimension == other.dimension
 
         return Vector(*map(sum,
                            zip(self.coordinates, other.coordinates)))
@@ -192,7 +192,7 @@ class Vector:
         ...
         AssertionError
         """
-        assert self.dimensions == other.dimensions
+        assert self.dimension == other.dimension
 
         return Vector(*map(lambda x: x[0] - x[1],
                            zip(self.coordinates, other.coordinates)))
@@ -214,7 +214,7 @@ class Vector:
         AssertionError
         """
         if isinstance(other, Vector):
-            assert self.dimensions == other.dimensions
+            assert self.dimension == other.dimension
 
             return sum(map(lambda x: x[0] * x[1],
                            zip(self.coordinates, other.coordinates)))

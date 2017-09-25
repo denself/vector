@@ -49,3 +49,33 @@ class Plane:
         helper_vector = self.base_point - other.base_point
 
         return self.normal_vector.is_orthogonal(helper_vector)
+
+    def __add__(self, other: 'Plane') -> 'Plane':
+        """
+        >>> Plane(Vector(1, 2, 3), 4) + Plane(Vector(2, 3, 1), 2)
+        Plane(Vector(3, 5, 4), 6)
+        >>> Plane(Vector(4, 5, 3), 4) + Plane(Vector(-4, -5, 1), 2)
+        Plane(Vector(0, 0, 4), 6)
+        """
+        assert self.dimension == other.dimension
+
+        return Plane(self.normal_vector + other.normal_vector,
+                     self.constant_term + other.constant_term)
+
+    def __mul__(self, other: Union[float, Decimal]) -> 'Plane':
+        """
+        >>> Plane(Vector(1, 2, 3), 1) * 2
+        Plane(Vector(2, 4, 6), 2)
+        >>> Plane(Vector(1, 2, 3), 1) * 0
+        Plane(Vector(0, 0, 0), 0)
+        >>> Plane(Vector(1, 2, 3), 1) * -1
+        Plane(Vector(-1, -2, -3), -1)
+        """
+        other = Decimal(other)
+        return Plane(self.normal_vector * other, self.constant_term * other)
+
+    def __str__(self):
+        class_name = self.__class__.__name__
+        return f"{class_name}({self.normal_vector}, {self.constant_term})"
+
+    __repr__ = __str__
