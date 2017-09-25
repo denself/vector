@@ -11,6 +11,27 @@ from tools import first_nonzero_index, is_zero
 from vector import Vector
 
 
+class Parametrization:
+
+    def __init__(self, basepoint: Vector, direction_vectors: Iterable[Vector]):
+        self.basepoint = basepoint
+        self.direction_vectors = direction_vectors
+        self.dimension = self.basepoint.dimension
+
+        for v in direction_vectors:
+            assert v.dimension == self.dimension
+
+    def __str__(self):
+        res = "[" + \
+              ", ".join([f"x_{i}" for i in range(self.dimension)]) + \
+              f"] = {self.basepoint}"
+        for i, vector in enumerate(self.direction_vectors):
+            if vector:
+                res += f" + x_{i} * {vector}"
+
+        return res
+
+
 class LinearSystem:
 
     def __init__(self,
@@ -227,20 +248,38 @@ class LinearSystem:
     def solve(self):
         system = self.compute_rref()
         answer = [0] * system.dimension
-        useful_equations = 0
+        useful_equations = []
         for i, plane in enumerate(system):
             j = first_nonzero_index(plane.normal_vector)
             if j is None:
                 if not is_zero(plane.constant_term):
                     return None
                 continue
-            useful_equations += 1
+            useful_equations.append(plane)
             answer[j] = plane.constant_term
 
-        if useful_equations < self.dimension:
-            return float('inf')
+        if len(useful_equations) < self.dimension:
+            return self.build_parametrization(useful_equations)
 
-        return answer
+        return Vector(*answer)
+
+    def build_parametrization(self, equations: Iterable[Plane]):
+        free_variables = []
+        for equation in equations:
+            free_variables.append(first_nonzero_index(equation.normal_vector))
+
+        vectors = [[0] * self.dimension for _ in range(self.dimension)]
+        basepoint = [0] * self.dimension
+        for equation in equations:
+            j = first_nonzero_index(equation.normal_vector)
+            basepoint[j] = equation.constant_term
+            for i, k in enumerate(equation.normal_vector[j+1:]):
+                if k:
+                    vectors[i + j + 1][j] = -k
+                    vectors[i + j + 1][i + j + 1] = 1
+
+        return Parametrization(Vector(*basepoint),
+                               [Vector(*vector) for vector in vectors])
 
     def __len__(self):
         return len(self.planes)

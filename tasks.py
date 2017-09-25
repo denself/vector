@@ -160,6 +160,30 @@ def task_9():
     ).solve())
 
 
+def task_10():
+    """
+    Task 10.
+    Coding parametrization.
+    """
+    print(LinearSystem(
+        Plane(Vector('0.786', '0.786', '0.588'), '-0.714'),
+        Plane(Vector('-0.138', '-0.138', '0.244'), '0.319')
+    ).solve())
+
+    print(LinearSystem(
+        Plane(Vector('8.631', '5.112', '-1.816'), '-5.113'),
+        Plane(Vector('4.315', '11.132', '-5.27'), '-6.775'),
+        Plane(Vector('-2.158', '3.01', '-1.727'), '-0.831')
+    ).solve())
+
+    print((LinearSystem(
+        Plane(Vector('0.935', '1.76', '-9.365'), '-9.955'),
+        Plane(Vector('0.187', '0.352', '-1.873'), '-1.991'),
+        Plane(Vector('0.374', '0.704', '-3.746'), '-3.982'),
+        Plane(Vector('-0.561', '-1.056', '5.619'), '5.973')
+    ).solve()))
+
+
 if __name__ == '__main__':
     Vector.precision = 4
     # task_1()
@@ -170,4 +194,5 @@ if __name__ == '__main__':
     # task_6()
     # task_7()
     # task_8()
-    task_9()
+    # task_9()
+    task_10()
