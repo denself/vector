@@ -3,7 +3,7 @@
 from decimal import Decimal
 from typing import Union
 
-from tools import is_zero, first_nonzero_index
+from tools import is_zero, first_nonzero_index, to_decimal
 from vector import Vector
 
 
@@ -29,7 +29,7 @@ class Line:
         self.dimension = 2
 
         self.normal_vector = normal_vector
-        self.constant_term = Decimal(constant_term)
+        self.constant_term = to_decimal(constant_term)
         self.base_point = None
 
         base_point_coords = ['0'] * self.dimension

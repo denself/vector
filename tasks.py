@@ -135,6 +135,10 @@ def task_8():
     print(p1 == p2, p1.is_parallel(p2))
 
 
+def task_9():
+    pass
+
+
 if __name__ == '__main__':
     Vector.precision = 4
     # task_1()

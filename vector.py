@@ -4,6 +4,8 @@ import math
 from decimal import Decimal, getcontext
 from typing import Union, Tuple
 
+from tools import is_zero, to_decimal
+
 getcontext().prec = 30
 
 
@@ -13,7 +15,7 @@ class Vector:
 
     def __init__(self, *coordinates: Union[float, str]):
 
-        self.coordinates = tuple([Decimal(x) for x in coordinates])
+        self.coordinates = tuple([to_decimal(x) for x in coordinates])
 
         self.dimension = len(self.coordinates)
 
@@ -52,7 +54,7 @@ class Vector:
         assert self.dimension == other.dimension
 
         product = self.get_unit_vector() * other.get_unit_vector()
-        return Decimal(math.acos(product))
+        return to_decimal(math.acos(product))
 
     def is_parallel(self, other: 'Vector') -> bool:
         """
@@ -220,7 +222,8 @@ class Vector:
                            zip(self.coordinates, other.coordinates)))
         elif isinstance(other, (int, float, Decimal)):
 
-            return Vector(*map(lambda x: x * Decimal(other), self.coordinates))
+            other = to_decimal(other)
+            return Vector(*map(lambda x: x * other, self.coordinates))
 
         else:
             raise AssertionError
@@ -240,7 +243,7 @@ class Vector:
 
         assert isinstance(other, (int, float, Decimal))
 
-        other = Decimal(other)
+        other = to_decimal(other)
 
         return Vector(*map(lambda x: x / other, self.coordinates))
 

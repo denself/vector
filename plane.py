@@ -3,7 +3,7 @@
 from decimal import Decimal
 from typing import Union
 
-from tools import first_nonzero_index
+from tools import first_nonzero_index, to_decimal
 from vector import Vector
 
 
@@ -15,7 +15,8 @@ class Plane:
         self.dimension = 3
 
         self.normal_vector = normal_vector
-        self.constant_term = Decimal(constant_term)
+        self.constant_term = to_decimal(constant_term)
+        self.base_point = None
 
         base_point_coords = ['0'] * self.dimension
         initial_index = first_nonzero_index(self.normal_vector)
@@ -46,6 +47,12 @@ class Plane:
         if not self.is_parallel(other):
             return False
 
+        if (self.base_point is None) and (other.base_point is None):
+            return True
+
+        if (self.base_point is None) != (other.base_point is None):
+            return True
+
         helper_vector = self.base_point - other.base_point
 
         return self.normal_vector.is_orthogonal(helper_vector)
@@ -71,7 +78,7 @@ class Plane:
         >>> Plane(Vector(1, 2, 3), 1) * -1
         Plane(Vector(-1, -2, -3), -1)
         """
-        other = Decimal(other)
+        other = to_decimal(other)
         return Plane(self.normal_vector * other, self.constant_term * other)
 
     def __str__(self):
