@@ -28,7 +28,7 @@ class Line:
 
         self.dimension = 2
 
-        self.normal_vector = normal_vector
+        self.normal_vector: Vector = normal_vector
         self.constant_term = to_decimal(constant_term)
         self.base_point = None
 

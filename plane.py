@@ -14,7 +14,7 @@ class Plane:
                  constant_term: Union[float, str, Decimal]):
         self.dimension = 3
 
-        self.normal_vector = normal_vector
+        self.normal_vector: Vector = normal_vector
         self.constant_term = to_decimal(constant_term)
         self.base_point = None
 

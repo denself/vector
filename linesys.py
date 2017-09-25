@@ -208,8 +208,6 @@ class LinearSystem:
         """
         system = self.compute_triangular_form()
 
-        equations = len(system)
-
         for i, plane in reversed(list(enumerate(system))):
             j = first_nonzero_index(plane.normal_vector)
             if j is None:
@@ -225,6 +223,24 @@ class LinearSystem:
                 system.add_multiple_times_row_to_row(c, i, k)
 
         return system
+
+    def solve(self):
+        system = self.compute_rref()
+        answer = [0] * system.dimension
+        useful_equations = 0
+        for i, plane in enumerate(system):
+            j = first_nonzero_index(plane.normal_vector)
+            if j is None:
+                if not is_zero(plane.constant_term):
+                    return None
+                continue
+            useful_equations += 1
+            answer[j] = plane.constant_term
+
+        if useful_equations < self.dimension:
+            return float('inf')
+
+        return answer
 
     def __len__(self):
         return len(self.planes)

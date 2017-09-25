@@ -3,6 +3,7 @@
 import math
 
 from line import Line, GeometryException
+from linesys import LinearSystem
 from plane import Plane
 from vector import Vector
 
@@ -136,7 +137,27 @@ def task_8():
 
 
 def task_9():
-    pass
+    """
+    Task 9.
+    Solving system of linear equations
+    """
+    print(LinearSystem(
+        Plane(Vector('5.862', '1.178', '-10.366'), '-8.15'),
+        Plane(Vector('-2.931', '-0.589', '5.183'), '-4.075')
+    ).solve())
+
+    print(LinearSystem(
+        Plane(Vector('8.631', '5.112', '-1.816'), '-5.113'),
+        Plane(Vector('4.315', '11.132', '-5.27'), '-6.775'),
+        Plane(Vector('-2.158', '3.01', '-1.727'), '-0.831')
+    ).solve())
+
+    print(LinearSystem(
+        Plane(Vector('5.262', '2.739', '-9.878'), '-3.441'),
+        Plane(Vector('5.111', '6.358', '7.638'), '-2.152'),
+        Plane(Vector('2.016', '-9.924', '-1.367'), '-9.278'),
+        Plane(Vector('2.167', '-13.543', '-18.883'), '-10.567')
+    ).solve())
 
 
 if __name__ == '__main__':
@@ -148,4 +169,5 @@ if __name__ == '__main__':
     # task_5()
     # task_6()
     # task_7()
-    task_8()
+    # task_8()
+    task_9()
